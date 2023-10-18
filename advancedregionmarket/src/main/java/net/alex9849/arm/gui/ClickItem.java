@@ -30,8 +30,25 @@ public class ClickItem extends ItemStack {
         return this;
     }
 
-    public ClickItem setLore(List<String> lore) {
-        ItemMeta itemMeta = this.itemStack.getItemMeta();
+    public ClickItem setLore(String lore1, String lore2, String lore3, String lore4) {
+    	//maybe its just folia or my ide, but using List<String> caused issues.
+    	List<String> lore = new ArrayList<>();;
+    	
+    	if (lore1 != null) {
+    		lore.add(lore1);
+    	}
+		if (lore2 != null) {
+			lore.add(lore2);
+		}
+		if (lore3 != null) {
+			lore.add(lore3);
+		}
+		if (lore4 != null) {
+			lore.add(lore4);
+		}
+    	
+
+    	ItemMeta itemMeta = this.itemStack.getItemMeta();
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
         return this;

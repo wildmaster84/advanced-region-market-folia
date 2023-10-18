@@ -109,9 +109,10 @@ public class Gui implements Listener {
         }
 
         if (player.hasPermission(Permission.MEMBER_TP)) {
+        	List<String> lore = region.replaceVariables(Messages.GUI_TELEPORT_TO_REGION_BUTTON_LORE);
             ClickItem teleportericon = new ClickItem(GuiConstants.getTpItem())
                     .setName(Messages.GUI_TELEPORT_TO_REGION_BUTTON)
-                    .setLore(region.replaceVariables(Messages.GUI_TELEPORT_TO_REGION_BUTTON_LORE))
+                    .setLore(lore.get(0), lore.get(1), lore.get(2), lore.get(3))
                     .addClickAction(new TeleportToRegionClickAction(region));
             items.add(teleportericon);
         }
@@ -123,7 +124,7 @@ public class Gui implements Listener {
                     .map(m -> m.replace("%userrestorecooldown%", coolDownTime)).collect(Collectors.toList());
             ClickItem reseticon = new ClickItem(GuiConstants.getResetItem())
                     .setName(Messages.GUI_RESET_REGION_BUTTON)
-                    .setLore(lore)
+                    .setLore(lore.get(0), lore.get(1), lore.get(2), lore.get(3))
                     .addClickAction(p -> {
                         if ((new GregorianCalendar().getTimeInMillis()) >= AdvancedRegionMarket.getInstance().getPluginSettings().getUserResetCooldown() + region.getLastreset()) {
                             Gui.openRegionRestoreWarning(player, region, lore, goBackActionForClickItems);
@@ -139,7 +140,7 @@ public class Gui implements Listener {
             List<String> sellIconWarning = region.replaceVariables(Messages.GUI_USER_SELL_BUTTON_LORE);
             ClickItem sellIcon = new ClickItem(GuiConstants.getSellRegionItem())
                     .setName(Messages.GUI_USER_SELL_BUTTON)
-                    .setLore(sellIconWarning)
+                    .setLore(sellIconWarning.get(0), sellIconWarning.get(1), sellIconWarning.get(2), sellIconWarning.get(3))
                     .addClickAction(p ->
                             Gui.openSellWarning(player, region, false, sellIconWarning, goBackActionForClickItems));
             items.add(sellIcon);
@@ -154,9 +155,10 @@ public class Gui implements Listener {
 
         if (region instanceof RentRegion) {
             RentRegion rentRegion = (RentRegion) region;
+            List<String> lore = region.replaceVariables(Messages.GUI_EXTEND_BUTTON_LORE);
             ClickItem extendIcon = new ClickItem(GuiConstants.getExtendItem())
                     .setName(Messages.GUI_EXTEND_BUTTON)
-                    .setLore(region.replaceVariables(Messages.GUI_EXTEND_BUTTON_LORE))
+                    .setLore(lore.get(0), lore.get(1), lore.get(2), lore.get(3))
                     .addClickAction(p -> {
                         try {
                             rentRegion.extend(p);
@@ -171,9 +173,10 @@ public class Gui implements Listener {
 
         if (region instanceof ContractRegion) {
             ContractRegion cregion = (ContractRegion) region;
+            List<String> lore = region.replaceVariables(Messages.GUI_CONTRACT_ITEM_LORE);
             ClickItem extendIcon = new ClickItem(GuiConstants.getContractItem())
                     .setName(Messages.GUI_CONTRACT_ITEM)
-                    .setLore(region.replaceVariables(Messages.GUI_CONTRACT_ITEM_LORE))
+                    .setLore(lore.get(0), lore.get(1), lore.get(2), lore.get(3))
                     .addClickAction(p -> {
                         try {
                             cregion.changeTerminated(player);
@@ -247,7 +250,7 @@ public class Gui implements Listener {
             }
             ClickItem flagItem = new ClickItem(GuiConstants.getFlagItem())
                     .setName(rgFlag.getName())
-                    .setLore(flagSettingsDescription);
+            		.setLore(flagSettingsDescription.get(0), flagSettingsDescription.get(1), flagSettingsDescription.get(2), flagSettingsDescription.get(3));
             guiInventory.addIcon(flagItem, invIndex);
 
             ClickItem[] flagStateButtons = getFlagSettingItem(rgFlag, region, (p) -> {
@@ -334,11 +337,11 @@ public class Gui implements Listener {
 
     public static void openRegionMemberManager(Player player, Region region, @Nullable ClickAction goBackAction) {
         List<ClickItem> items = new ArrayList<>();
-
+        List<String> lore = region.replaceVariables(Messages.GUI_TELEPORT_TO_REGION_BUTTON_LORE);
         if (player.hasPermission(Permission.MEMBER_TP)) {
             ClickItem teleporterIcon = new ClickItem(GuiConstants.getTpItem())
                     .setName(Messages.GUI_TELEPORT_TO_REGION_BUTTON)
-                    .setLore(region.replaceVariables(Messages.GUI_TELEPORT_TO_REGION_BUTTON_LORE))
+                    .setLore(lore.get(0), lore.get(1), lore.get(2), lore.get(3))
                     .addClickAction(new TeleportToRegionClickAction(region));
             items.add(teleporterIcon);
         }
@@ -370,6 +373,7 @@ public class Gui implements Listener {
 
     public static void openSubregionList(Player player, Region region, @Nullable ClickAction goBackAction) {
         List<ClickItem> clickItems = new ArrayList<>();
+        List<String> lore = region.replaceVariables(Messages.GUI_SUBREGION_MANAGER_NO_SUBREGION_ITEM_LORE);
         for (Region subregion : region.getSubregions()) {
             ItemStack subregionItem = Gui.getRegionDisplayItem(subregion, Messages.GUI_SUBREGION_REGION_INFO_RENT,
                     Messages.GUI_SUBREGION_REGION_INFO_SELL, Messages.GUI_SUBREGION_REGION_INFO_CONTRACT);
@@ -383,7 +387,7 @@ public class Gui implements Listener {
         if (clickItems.size() == 0) {
             ClickItem infoItem = new ClickItem(GuiConstants.getInfoItem())
                     .setName(Messages.GUI_SUBREGION_MANAGER_NO_SUBREGION_ITEM)
-                    .setLore(region.replaceVariables(Messages.GUI_SUBREGION_MANAGER_NO_SUBREGION_ITEM_LORE));
+                    .setLore(lore.get(0), lore.get(1), lore.get(2), lore.get(3));
             clickItems.add(infoItem);
         }
         GuiUtils.openInfiniteGuiList(player, clickItems, 0, Messages.GUI_SUBREGION_LIST_MENU_NAME, goBackAction, null);
@@ -391,11 +395,11 @@ public class Gui implements Listener {
 
     public static void openSubregionManager(Player player, Region region, Region parentRegion, @Nullable ClickAction goBackAction) {
         List<ClickItem> items = new ArrayList<>();
-
+        List<String> lore = region.replaceVariables(Messages.GUI_SUBREGION_HOTEL_BUTTON_LORE);
         if (player.hasPermission(Permission.SUBREGION_SET_IS_HOTEL)) {
             ClickItem isHotelItem = new ClickItem(GuiConstants.getHotelSettingItem())
                     .setName(Messages.GUI_SUBREGION_HOTEL_BUTTON)
-                    .setLore(region.replaceVariables(Messages.GUI_SUBREGION_HOTEL_BUTTON_LORE))
+                    .setLore(lore.get(0), lore.get(1), lore.get(2), lore.get(3))
                     .addClickAction(p -> {
                         region.setHotel(!region.isHotel());
                         Gui.openSubregionManager(p, region, parentRegion, goBackAction);
@@ -453,7 +457,7 @@ public class Gui implements Listener {
             List<String> unsellButtonLore = region.replaceVariables(Messages.UNSELL_REGION_BUTTON_LORE);
             ClickItem unsellItem = new ClickItem(GuiConstants.getUnsellItem())
                     .setName(Messages.UNSELL_REGION_BUTTON)
-                    .setLore(unsellButtonLore)
+                    .setLore(unsellButtonLore.get(0), unsellButtonLore.get(1), unsellButtonLore.get(2), unsellButtonLore.get(3))
                     .addClickAction(p ->
                             openWarning(player, pl -> {
                                 region.unsell(Region.ActionReason.MANUALLY_BY_PARENT_REGION_OWNER, true, false);
@@ -496,7 +500,7 @@ public class Gui implements Listener {
             if (regionKind.isDisplayInRegionfinder()) {
                 ClickItem clickItem = new ClickItem(regionKind.getMaterial())
                         .setName(regionKind.replaceVariables(Messages.GUI_REGIONFINDER_REGIONKIND_NAME))
-                        .setLore(regionKind.getLore())
+                        .setLore(regionKind.getLore().get(0), regionKind.getLore().get(1), regionKind.getLore().get(2), regionKind.getLore().get(3))
                         .setCustomItemModel(regionKind.getCustomItemModel())
                         .addClickAction(p -> {
                             Gui.openRegionFinderSellTypeSelector(player, AdvancedRegionMarket.getInstance()
@@ -592,6 +596,7 @@ public class Gui implements Listener {
     public static void openRegionAddedMembersList(Player player, Region region, ClickAction goBackAction) {
         ArrayList<UUID> members = region.getRegion().getMembers();
         List<ClickItem> clickItems = new ArrayList<>();
+        List<String> lore = region.replaceVariables(Messages.GUI_OWNER_MEMBER_INFO_LORE);
 
         FileConfiguration config = AdvancedRegionMarket.getInstance().getConfig();
         boolean showPlayerSkins = config.getBoolean("GUI.DisplayPlayerSkins");
@@ -617,7 +622,7 @@ public class Gui implements Listener {
         if (members.size() < region.getMaxMembers() || region.getMaxMembers() == -1) {
             howToAddMebersItem = new ClickItem(GuiConstants.getInfoItem())
                     .setName(Messages.GUI_OWNER_MEMBER_INFO_ITEM)
-                    .setLore(region.replaceVariables(Messages.GUI_OWNER_MEMBER_INFO_LORE));
+                    .setLore(lore.get(0), lore.get(1), lore.get(2), lore.get(3));
         }
 
         GuiUtils.openInfiniteGuiList(player, clickItems, 0,
@@ -633,16 +638,17 @@ public class Gui implements Listener {
             List<String> makeOwnerWarningLore = region.replaceVariables(Messages.GUI_MAKE_OWNER_BUTTON_LORE);
             ClickItem makeOwnerItem = new ClickItem(GuiConstants.getPromoteMemberToOwnerItem())
                     .setName(Messages.GUI_MAKE_OWNER_BUTTON)
-                    .setLore(makeOwnerWarningLore)
+                    .setLore(makeOwnerWarningLore.get(0), makeOwnerWarningLore.get(1), makeOwnerWarningLore.get(2), makeOwnerWarningLore.get(3))
                     .addClickAction(p -> openMakeOwnerWarning(player, region, member, makeOwnerWarningLore, pl ->
                             openaddedMemberManager(player, region, member, goBackAction)));
             clickItems.add(makeOwnerItem);
         }
 
         if (player.hasPermission(Permission.MEMBER_REMOVEMEMBER)) {
+        	List<String> lore = region.replaceVariables(Messages.GUI_REMOVE_MEMBER_BUTTON_LORE);
             ClickItem removeItem = new ClickItem(GuiConstants.getRemoveMemberItem())
                     .setName(Messages.GUI_REMOVE_MEMBER_BUTTON)
-                    .setLore(region.replaceVariables(Messages.GUI_REMOVE_MEMBER_BUTTON_LORE))
+                    .setLore(lore.get(0), lore.get(1), lore.get(2), lore.get(3))
                     .addClickAction(p -> {
                         region.getRegion().removeMember(member.getUniqueId());
                         player.sendMessage(Messages.PREFIX + Messages.REGION_REMOVE_MEMBER_REMOVED);
@@ -688,13 +694,13 @@ public class Gui implements Listener {
         GuiInventory inv = new GuiInventory(GuiConstants.GUI_ROW_SIZE, title);
         ClickItem yesButton = new ClickItem(GuiConstants.getWarningYesItem())
                 .setName(Messages.GUI_YES)
-                .setLore(yesLore)
+                .setLore(yesLore.get(0), yesLore.get(1), yesLore.get(2), yesLore.get(3))
                 .addClickAction(yesAction);
         inv.addIcon(yesButton, 0);
 
         ClickItem noButton = new ClickItem(GuiConstants.getWarningNoItem())
                 .setName(Messages.GUI_NO)
-                .setLore(noLore)
+                .setLore(noLore.get(0), noLore.get(1), noLore.get(2), noLore.get(3))
                 .addClickAction(noAction);
         inv.addIcon(noButton, GuiConstants.GUI_ROW_SIZE - 1);
 
@@ -705,6 +711,7 @@ public class Gui implements Listener {
     public static void openRegionListMember(Player player, ClickAction goBackAction) {
         List<ClickItem> clickItems = new ArrayList<>();
         List<Region> regions = AdvancedRegionMarket.getInstance().getRegionManager().getRegionsByMember(player.getUniqueId());
+        List<String> lore = Messages.GUI_MEMBER_INFO_LORE;
 
         for (Region region : regions) {
             ItemStack regionItem = Gui.getRegionDisplayItem(region, Messages.GUI_RENT_REGION_LORE, new ArrayList<>(), Messages.GUI_CONTRACT_REGION_LORE);
@@ -716,7 +723,7 @@ public class Gui implements Listener {
 
         ClickItem howToBecomeAMemberItem = new ClickItem(GuiConstants.getInfoItem())
                 .setName(Messages.GUI_MEMBER_INFO_ITEM)
-                .setLore(Messages.GUI_MEMBER_INFO_LORE);
+                .setLore(lore.get(0), lore.get(1), lore.get(2), lore.get(3));
 
         GuiUtils.openInfiniteGuiList(player, clickItems, 0, Messages.GUI_MEMBER_REGIONS_MENU_NAME, goBackAction, howToBecomeAMemberItem);
     }
