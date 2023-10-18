@@ -7,9 +7,9 @@
 
 AdvancedRegionMarket is a plugin for the Minecraft server API called Spigot.
 The plugin allows server admins to sell or rent in-game regions to players using in-game currency.
-To achieve this AdvancedRegionMarket integrates with [WorldGuard](https://github.com/EngineHub/worldguard)
-which defines regions, [WorldEdit](https://github.com/EngineHub/WorldEdit) which is used to restore regions
-and [Vault](https://github.com/MilkBowl/Vault) which provides an API to communicate with in-game
+To achieve this AdvancedRegionMarket integrates with [WorldGuardFolia](https://github.com/wildmaster84/WorldGuardFolia)
+which defines regions, [WorldEdit](https://github.com/wildmaster84/FastAsyncWorldEdit) which is used to restore regions
+and [Vault](https://github.com/SirBlobman/Vault-Folia) which provides an API to communicate with in-game
 currency plugins.
 
 Find more information about the plugin on its download page on [SpigotMC.org](https://www.spigotmc.org/resources/advancedregionmarket.58732/)
