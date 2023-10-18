@@ -7,14 +7,17 @@ import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
+
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ParticleBorder {
     private Player player;
-    private Integer taskID;
-    private Integer cancelerID;
+    private ScheduledTask taskID;
+    private ScheduledTask cancelerID;
     private World world;
     private List<Vector> points;
     private int depth;
@@ -168,7 +171,7 @@ public class ParticleBorder {
 
         final World finalWorld = this.world;
 
-        this.taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(AdvancedRegionMarket.getInstance(), new Runnable() {
+        this.taskID = Bukkit.getRegionScheduler().runAtFixedRate(AdvancedRegionMarket.getInstance(), finalWorld, player.getLocation().getBlockX(), player.getLocation().getBlockZ(), (task) -> new Runnable() {
 
             @Override
             public void run() {
@@ -181,12 +184,12 @@ public class ParticleBorder {
                     }
                 }
             }
-        }, 0, 20);
-        this.cancelerID = Bukkit.getScheduler().scheduleSyncDelayedTask(AdvancedRegionMarket.getInstance(), new Runnable() {
+        }, 1, 20);
+        this.cancelerID = Bukkit.getRegionScheduler().runDelayed(AdvancedRegionMarket.getInstance(), finalWorld, player.getLocation().getBlockX(), player.getLocation().getBlockZ(), (task) -> new Runnable() {
             @Override
             public void run() {
                 if (taskID != null) {
-                    Bukkit.getScheduler().cancelTask(taskID);
+                	taskID.cancel();
                 }
                 cancelerID = null;
                 taskID = null;
@@ -198,8 +201,10 @@ public class ParticleBorder {
         if ((this.taskID == null) || (this.cancelerID == null)) {
             return;
         }
-        Bukkit.getScheduler().cancelTask(cancelerID);
-        Bukkit.getScheduler().cancelTask(taskID);
+        Bukkit.getGlobalRegionScheduler().run(AdvancedRegionMarket.getInstance(), (task) -> {
+        	cancelerID.cancel();
+        	taskID.cancel();
+        });
         cancelerID = null;
         taskID = null;
     }

@@ -224,7 +224,8 @@ public class AdvancedRegionMarket extends JavaPlugin {
         loadInactivityExpirationGroups();
         this.presetPatternManager = new PresetPatternManager(new File(this.getDataFolder() + "/presets.yml"));
         this.getRegionManager().setTabCompleteRegions(getConfig().getBoolean("Other.CompleteRegionsOnTabComplete"));
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> this.getRegionManager().doTick(), 1, 1);
+        
+        Bukkit.getGlobalRegionScheduler().runAtFixedRate(this, (task) -> this.getRegionManager().doTick(), 1, 1);
 
         this.loadCommands();
 
@@ -232,7 +233,7 @@ public class AdvancedRegionMarket extends JavaPlugin {
         getLogger().log(Level.INFO, "I'm always searching for better translations of AdvancedRegionMarket. "
                 + "If you've translated the plugin it would be very nice if you would send me your translation via "
                 + "spigot private message! :)");
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
+        Bukkit.getGlobalRegionScheduler().runAtFixedRate(this, (task) -> new Runnable() {
             @Override
             public void run() {
                 AdvancedRegionMarket.getInstance().getRegionManager().updateFile();
@@ -241,14 +242,14 @@ public class AdvancedRegionMarket extends JavaPlugin {
                 AdvancedRegionMarket.getInstance().getRegionKindManager().updateFile();
                 AdvancedRegionMarket.getInstance().getFlagGroupManager().updateFile();
             }
-        }, 0, 60);
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
+        }, 1, 60);
+        Bukkit.getGlobalRegionScheduler().runAtFixedRate(this, (task) -> new Runnable() {
             @Override
             public void run() {
                 PlayerInactivityGroupMapper.updateMapAscync();
             }
         }, 900, 6000);
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
+        Bukkit.getGlobalRegionScheduler().runAtFixedRate(this, (task) -> new Runnable() {
             @Override
             public void run() {
                 for (Region region : AdvancedRegionMarket.getInstance().getRegionManager()) {

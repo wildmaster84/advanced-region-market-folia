@@ -851,12 +851,15 @@ public abstract class Region implements Saveable {
     public void updateSigns() {
 
         for (SignData signData : this.sellsign) {
-            if (signData.isChunkLoaded()) {
-                if (!signData.isPlaced()) {
-                    signData.placeSign();
+        	Bukkit.getRegionScheduler().execute(plugin, signData.getLocation(), () -> {
+        		if (signData.isChunkLoaded()) {
+                    if (!signData.isPlaced()) {
+                        signData.placeSign();
+                    }
+                    this.updateSignText(signData);
                 }
-                this.updateSignText(signData);
-            }
+        	});
+            
         }
     }
 

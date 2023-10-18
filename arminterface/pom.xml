@@ -13,13 +13,12 @@
     <version>3.5.4-SNAPSHOT</version>
 
     <dependencies>
-        <!--Bukkit API-->
         <dependency>
-            <groupId>org.bukkit</groupId>
-            <artifactId>bukkit</artifactId>
-            <version>1.12.2-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
+		    <groupId>dev.folia</groupId>
+		    <artifactId>folia-api</artifactId>
+		    <version>1.20.1-R0.1-SNAPSHOT</version>
+		    <scope>provided</scope>
+		</dependency>
         <dependency>
             <groupId>com.sk89q.worldedit</groupId>
             <artifactId>worldedit-bukkit</artifactId>

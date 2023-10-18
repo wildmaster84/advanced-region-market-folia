@@ -1,8 +1,11 @@
 package net.alex9849.arm.adapters.signs;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
+import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class SignData {
     private Location signLoc;
@@ -16,7 +19,8 @@ public abstract class SignData {
     }
 
     public boolean isChunkLoaded() {
-        return this.signLoc.getWorld().isChunkLoaded(this.signLoc.getBlockX() / 16, this.signLoc.getBlockZ() / 16);
+    	
+        return this.signLoc.getWorld().getChunkAt(this.signLoc).isLoaded();
     }
 
     public abstract void placeSign();
